@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANBON Material Kitting System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .toggle-form a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+
+        #loginForm {
+            display: none;
+        }
+
+        #forgotPasswordForm {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Registration Form -->
+        <form id="registrationForm">
+            <h1>Register</h1>
+            
+            <div class="form-group">
+                <label for="regEmail">Email</label>
+                <input type="email" id="regEmail" required>
+                <div class="error" id="regEmailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="regFullName">Full Name</label>
+                <input type="text" id="regFullName" required>
+                <div class="error" id="regFullNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="regPhone">Phone Number</label>
+                <input type="tel" id="regPhone" required>
+                <div class="error" id="regPhoneError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="regRole">Role</label>
+                <select id="regRole" required>
+                    <option value="">Select Role</option>
+                    <option value="Team Leader">Team Leader</option>
+                    <option value="Engineer">Engineer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" required>
+                <div class="error" id="regPasswordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="regConfirmPassword">Confirm Password</label>
+                <input type="password" id="regConfirmPassword" required>
+                <div class="error" id="regConfirmPasswordError"></div>
+            </div>
+
+            <button type="submit">Register</button>
+            
+            <div class="toggle-form">
+                Already have an account? <a href="#" onclick="toggleForms('loginForm')">Login</a>
+            </div>
+        </form>
+
+        <!-- Login Form -->
+        <form id="loginForm">
+            <h1>Login</h1>
+            
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required>
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+
+            <button type="submit">Login</button>
+            
+            <div class="toggle-form">
+                <a href="#" onclick="toggleForms('forgotPasswordForm')">Forgot Password?</a><br>
+                Don't have an account? <a href="#" onclick="toggleForms('registrationForm')">Register</a>
+            </div>
+        </form>
+
+        <!-- Forgot Password Form -->
+        <form id="forgotPasswordForm">
+            <h1>Reset Password</h1>
+            
+            <div class="form-group">
+                <label for="resetEmail">Email</label>
+                <input type="email" id="resetEmail" required>
+            </div>
+
+            <button type="submit">Send Reset Link</button>
+            
+            <div class="toggle-form">
+                <a href="#" onclick="toggleForms('loginForm')">Back to Login</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Form visibility toggle
+        function toggleForms(formId) {
+            document.getElementById('registrationForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        // Email validation
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Phone number validation
+        function isValidPhone(phone) {
+            return /^\+?[\d\s-]{10,}$/.test(phone);
+        }
+
+        // Name validation
+        function isValidName(name) {
+            return /^[a-zA-Z\s]{2,}$/.test(name);
+        }
+
+        // Live validation
+        document.getElementById('regEmail').addEventListener('input', function() {
+            const error = document.getElementById('regEmailError');
+            if (!isValidEmail(this.value)) {
+                error.textContent = 'Please enter a valid email address';
+                error.style.display = 'block';
+            } else {
+                error.style.display = 'none';
+            }
+        });
+
+        document.getElementById('regFullName').addEventListener('input', function() {
+            const error = document.getElementById('regFullNameError');
+            if (!isValidName(this.value)) {
+                error.textContent = 'Please enter a valid name (letters and spaces only)';
+                error.style.display = 'block';
+            } else {
+                error.style.display = 'none';
+            }
+        });
+
+        document.getElementById('regPhone').addEventListener('input', function() {
+            const error = document.getElementById('regPhoneError');
+            if (!isValidPhone(this.value)) {
+                error.textContent = 'Please enter a valid phone number with country code';
+                error.style.display = 'block';
+            } else {
+                error.style.display = 'none';
+            }
+        });
+
+        document.getElementById('regPassword').addEventListener('input', validatePassword);
+        document.getElementById('regConfirmPassword').addEventListener('input', validatePassword);
+
+        function validatePassword() {
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const error = document.getElementById('regConfirmPasswordError');
+
+            if (confirmPassword && password !== confirmPassword) {
+                error.textContent = 'Passwords do not match';
+                error.style.display = 'block';
+            } else {
+                error.style.display = 'none';
+            }
+        }
+
+        // Form submissions
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                email: document.getElementById('regEmail').value,
+                fullName: document.getElementById('regFullName').value,
+                phoneNumber: document.getElementById('regPhone').value,
+                role: document.getElementById('regRole').value,
+                password: document.getElementById('regPassword').value
+            };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Registration successful! Please login.');
+                    toggleForms('loginForm');
+                } else {
+                    alert(data.error || 'Registration failed');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                email: document.getElementById('loginEmail').value,
+                password: document.getElementById('loginPassword').value
+            };
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = '/profile.html';
+                } else {
+                    alert(data.error || 'Login failed');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('resetEmail').value;
+
+            try {
+                const response = await fetch('/api/forgot-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Password reset link has been sent to your email');
+                    toggleForms('loginForm');
+                } else {
+                    alert(data.error || 'Failed to send reset link');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - ANBON Material Kitting System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 2px solid #0056b3;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .action-button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            transition: all 0.2s ease;
+        }
+
+        .action-button:hover {
+            background-color: #e9ecef;
+            border-color: #ced4da;
+        }
+
+        .profile-info {
+            padding: 1rem 0;
+        }
+
+        .info-row {
+            display: flex;
+            margin: 0.75rem 0;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .info-row label {
+            width: 100px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .info-row .info-value {
+            color: #212529;
+            flex: 1;
+            padding-left: 1rem;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .description-cell {
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: help;
+        }
+
+        /* Responsive table */
+        @media (max-width: 992px) {
+            .description-cell {
+                max-width: 150px;
+            }
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-block;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Zebra striping for better readability */
+        #reportsTable tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        #reportsTable tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* Action buttons */
+        .action-btn {
+            margin: 0 0.25rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .edit-btn {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .view-btn:hover { background-color: #138496; }
+        .edit-btn:hover { background-color: #e0a800; }
+        .delete-btn:hover { background-color: #c82333; }
+
+        .action-btn {
+            padding: 0.25rem 0.5rem;
+            margin: 0 0.25rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .photos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        .view-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .add-photo-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #changePasswordModal, #editTeamMemberModal, #viewPhotosModal, #addPhotosModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            position: relative;
+            margin: 2rem auto;
+            overflow-y: auto;
+        }
+
+                .edit-report-section {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .edit-report-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .edit-report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .edit-report-header h2 {
+            margin: 0;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .back-btn {
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background: #e9ecef;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            background: #fff;
+        }
+
+        textarea.form-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .photos-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .photo-item .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 0.25rem 0.5rem;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .photo-item .delete-btn:hover {
+            background: rgb(220, 53, 69);
+        }
+
+        .form-actions {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+
+        .update-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .update-btn:hover {
+            background: #218838;
+        }
+
+        #viewPhotosModal .modal-content {
+            padding-top: 3rem;
+        }
+
+        .close {
+            position: sticky;
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            background: white;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="profile-icon" id="profileIcon"></div>
+        <button class="logout-btn" onclick="logout()">Sign Out</button>
+    </div>
+
+    <div class="container">
+        <!-- Profile Section -->
+        <div class="card">
+            <h2>Profile Information</h2>
+            <div class="profile-actions">
+                <button type="button" onclick="toggleProfileForm()" class="action-button">Edit Profile</button>
+                <button type="button" onclick="showChangePasswordModal()" class="action-button">Change Password</button>
+            </div>
+            <div class="profile-info">
+                <div class="info-row">
+                    <label>Full Name:</label>
+                    <span id="summaryFullName" class="info-value"></span>
+                </div>
+                <div class="info-row">
+                    <label>Email:</label>
+                    <span id="summaryEmail" class="info-value"></span>
+                </div>
+                <div class="info-row">
+                    <label>Phone:</label>
+                    <span id="summaryPhone" class="info-value"></span>
+                </div>
+            </div>
+            <form id="profileForm" style="display: none;">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber" required>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit">Save Changes</button>
+                    <button type="button" onclick="toggleProfileForm(false)">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Team Members Section -->
+        <div class="card">
+            <h2>Team Members</h2>
+            <form id="teamMemberForm">
+                <div class="form-group">
+                    <label for="memberName">Full Name</label>
+                    <input type="text" id="memberName" required>
+                </div>
+                <div class="form-group">
+                    <label for="memberPhone">Phone Number</label>
+                    <input type="tel" id="memberPhone" required>
+                </div>
+                <button type="submit">Add Team Member</button>
+            </form>
+            <table id="teamMembersTable">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Phone Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Report Submission Section -->
+        <div class="card">
+            <h2>Submit Report</h2>
+            <form id="reportForm">
+                <div class="form-group">
+                    <label for="siteName">Site Name</label>
+                    <input type="text" id="siteName" required>
+                </div>
+                <div class="form-group">
+                    <label for="boxCount">Number of Boxes Kitted</label>
+                    <input type="number" id="boxCount" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="reportImages">Images</label>
+                    <input type="file" id="reportImages" multiple accept="image/*" capture="environment">
+                    <div class="image-preview" id="imagePreview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="description">Work Description</label>
+                    <textarea id="description" rows="4" required></textarea>
+                </div>
+                <button type="submit">Submit Report</button>
+            </form>
+        </div>
+
+        <!-- Reports Table Section -->
+        <div class="card">
+            <h2>My Reports</h2>
+            <table id="reportsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Site Name</th>
+                        <th>Box Count</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal">
+        <div class="modal-content">
+            <span class="close" onclick="hideChangePasswordModal()">&times;</span>
+            <h2>Change Password</h2>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" required>
+                </div>
+                <button type="submit">Change Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Team Member Modal -->
+    <div id="editTeamMemberModal">
+        <div class="modal-content">
+            <span class="close" onclick="hideEditTeamMemberModal()">&times;</span>
+            <h2>Edit Team Member</h2>
+            <form id="editTeamMemberForm">
+                <input type="hidden" id="editMemberId">
+                <div class="form-group">
+                    <label for="editMemberName">Full Name</label>
+                    <input type="text" id="editMemberName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMemberPhone">Phone Number</label>
+                    <input type="tel" id="editMemberPhone" required>
+                </div>
+                <button type="submit">Update Team Member</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Photos Modal -->
+    <div id="viewPhotosModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideViewPhotosModal()">&times;</span>
+            <h2>Report Photos</h2>
+            <div id="photosGrid" class="photos-grid"></div>
+        </div>
+    </div>
+
+    <!-- Add Photos Modal -->
+    <div id="addPhotosModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideAddPhotosModal()">&times;</span>
+            <h2>Add More Photos</h2>
+            <form id="addPhotosForm">
+                <input type="hidden" id="reportIdForPhotos">
+                <div class="form-group">
+                    <label for="additionalPhotos">Select Photos</label>
+                    <input type="file" id="additionalPhotos" multiple accept="image/*" capture="environment" required>
+                    <div class="image-preview" id="additionalPhotosPreview"></div>
+                </div>
+                <button type="submit">Upload Photos</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Report Section -->
+    <div id="editReportModal" class="edit-report-section">
+        <div class="edit-report-container">
+            <div class="edit-report-header">
+                <h2>Edit Report</h2>
+                <button class="back-btn" onclick="hideEditReportModal()">← Back to Reports</button>
+            </div>
+            <form id="editReportForm">
+                <input type="hidden" id="editReportId">
+                <div class="form-group">
+                    <label for="editSiteName">Site Name</label>
+                    <input type="text" id="editSiteName" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="editBoxCount">Number of Boxes Kitted</label>
+                    <input type="number" id="editBoxCount" class="form-input" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Work Description</label>
+                    <textarea id="editDescription" class="form-input" rows="4" required></textarea>
+                </div>
+                <div class="form-group photos-section">
+                    <label class="section-label">Current Photos</label>
+                    <div id="currentPhotosPreview" class="photos-grid"></div>
+                </div>
+                <div class="form-group">
+                    <label for="editReportImages" class="section-label">Add More Photos</label>
+                    <div class="file-input-container">
+                        <input type="file" id="editReportImages" multiple accept="image/*" capture="environment">
+                        <div class="image-preview" id="editImagePreview"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="update-btn">Update Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/index.html';
+            }
+            return token;
+        }
+
+        // Initialize profile icon
+        function initProfileIcon() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.fullName) {
+                document.getElementById('profileIcon').textContent = user.fullName.charAt(0).toUpperCase();
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/index.html';
+        }
+
+        // Modal functions
+        function showChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'block';
+        }
+
+        function hideChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+        }
+
+        function showEditTeamMemberModal(member) {
+            document.getElementById('editMemberId').value = member._id;
+            document.getElementById('editMemberName').value = member.fullName;
+            document.getElementById('editMemberPhone').value = member.phoneNumber;
+            document.getElementById('editTeamMemberModal').style.display = 'block';
+        }
+
+        function hideEditTeamMemberModal() {
+            document.getElementById('editTeamMemberModal').style.display = 'none';
+        }
+
+        // Load profile data
+        async function loadProfile() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('/api/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to fetch profile');
+                }
+
+                const data = await response.json();
+                
+                // Update form fields
+                document.getElementById('fullName').value = data.fullName || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('phoneNumber').value = data.phoneNumber || '';
+                
+                // Update summary view
+                document.getElementById('summaryFullName').textContent = data.fullName || 'Not set';
+                document.getElementById('summaryEmail').textContent = data.email || 'Not set';
+                document.getElementById('summaryPhone').textContent = data.phoneNumber || 'Not set';
+
+                // Update profile icon
+                if (data.fullName) {
+                    document.getElementById('profileIcon').textContent = data.fullName.charAt(0).toUpperCase();
+                }
+
+                // Store user data in localStorage
+                const userData = {
+                    fullName: data.fullName,
+                    email: data.email,
+                    role: data.role
+                };
+                localStorage.setItem('user', JSON.stringify(userData));
+
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                alert('Failed to load profile data. Please refresh the page or try logging in again.');
+            }
+        }
+
+        // Toggle profile form visibility
+        function toggleProfileForm(show = true) {
+            const form = document.getElementById('profileForm');
+            const summary = document.getElementById('profileSummary');
+            const editBtn = document.getElementById('editProfileBtn');
+            
+            if (show === true || form.style.display === 'none') {
+                form.style.display = 'block';
+                summary.style.display = 'none';
+                editBtn.textContent = 'Cancel';
+            } else {
+                form.style.display = 'none';
+                summary.style.display = 'block';
+                editBtn.textContent = 'Edit Profile';
+            }
+        }
+
+        // Load team members
+        async function loadTeamMembers() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('/api/team-members', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const members = await response.json();
+                
+                const tbody = document.querySelector('#teamMembersTable tbody');
+                tbody.innerHTML = '';
+                
+                members.forEach(member => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${member.fullName}</td>
+                        <td>${member.phoneNumber}</td>
+                        <td>
+                            <button class="action-btn edit-btn" onclick='showEditTeamMemberModal(${JSON.stringify(member)})'>Edit</button>
+                            <button class="action-btn delete-btn" onclick='deleteTeamMember("${member._id}")'>Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error loading team members:', error);
+            }
+        }
+
+        // Load reports
+        async function loadReports() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('/api/reports', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const reports = await response.json();
+                
+                const tbody = document.querySelector('#reportsTable tbody');
+                tbody.innerHTML = '';
+                
+                reports.forEach(report => {
+                    const tr = document.createElement('tr');
+                    const date = new Date(report.dateTime).toLocaleDateString();
+                    // Truncate description if it's too long
+                    const truncatedDescription = report.description.length > 50 
+                        ? report.description.substring(0, 50) + '...' 
+                        : report.description;
+                    tr.innerHTML = `
+                        <td>${date}</td>
+                        <td>${report.siteName}</td>
+                        <td>${report.boxCount}</td>
+                        <td>
+                            <div class="description-cell" title="${report.description}">
+                                ${truncatedDescription}
+                            </div>
+                        </td>
+                        <td><span class="status-badge status-${report.status.toLowerCase()}">${report.status}</span></td>
+                        <td>
+                            <button class="action-btn view-btn" onclick='viewReportPhotos("${report._id}")'>View Photos</button>
+                            ${(report.status === 'Pending' || report.status === 'Rejected') ? `
+                                <button class="action-btn edit-btn" onclick='editReport("${report._id}")'>Edit</button>
+                                <button class="action-btn delete-btn" onclick='deleteReport("${report._id}")'>Delete</button>
+                            ` : ''}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error loading reports:', error);
+            }
+        }
+
+        // Image preview
+        document.getElementById('reportImages').addEventListener('change', function(e) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            
+            [...e.target.files].forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'preview-image';
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Form submissions
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const token = checkAuth();
+            
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                phoneNumber: document.getElementById('phoneNumber').value
+            };
+
+            try {
+                const response = await fetch('/api/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    // Update summary view
+                    document.getElementById('summaryFullName').textContent = formData.fullName;
+                    document.getElementById('summaryPhone').textContent = formData.phoneNumber;
+                    
+                    // Update local storage and profile icon
+                    const user = JSON.parse(localStorage.getItem('user'));
+                    user.fullName = formData.fullName;
+                    localStorage.setItem('user', JSON.stringify(user));
+                    initProfileIcon();
+                    
+                    // Hide form and show summary
+                    toggleProfileForm(false);
+                    
+                    alert('Profile updated successfully');
+                } else {
+                    alert('Failed to update profile');
+                }
+            } catch (error) {
+                alert('An error occurred');
+            }
+        });
+
+        document.getElementById('teamMemberForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const token = checkAuth();
+            
+            const formData = {
+                fullName: document.getElementById('memberName').value,
+                phoneNumber: document.getElementById('memberPhone').value
+            };
+
+            try {
+                const response = await fetch('/api/team-members', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    this.reset();
+                    loadTeamMembers();
+                } else {
+                    alert('Failed to add team member');
+                }
+            } catch (error) {
+                alert('An error occurred');
+            }
+        });
+
+        document.getElementById('editTeamMemberForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const token = checkAuth();
+            const memberId = document.getElementById('editMemberId').value;
+            
+            const formData = {
+                fullName: document.getElementById('editMemberName').value,
+                phoneNumber: document.getElementById('editMemberPhone').value
+            };
+
+            try {
+                const response = await fetch(`/api/team-members/${memberId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    hideEditTeamMemberModal();
+                    loadTeamMembers();
+                } else {
+                    alert('Failed to update team member');
+                }
+            } catch (error) {
+                alert('An error occurred');
+            }
+        });
+
+        async function deleteTeamMember(memberId) {
+            if (!confirm('Are you sure you want to delete this team member?')) return;
+            
+            const token = checkAuth();
+            try {
+                const response = await fetch(`/api/team-members/${memberId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    loadTeamMembers();
+                } else {
+                    alert('Failed to delete team member');
+                }
+            } catch (error) {
+                alert('An error occurred');
+            }
+        }
+
+        // Edit Report Functions
+        async function editReport(reportId) {
+            const token = checkAuth();
+            try {
+                const response = await fetch(`/api/reports/${reportId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to fetch report');
+                }
+                
+                const report = await response.json();
+
+                if (report.status !== 'Pending' && report.status !== 'Rejected') {
+                    alert('Only pending or rejected reports can be edited.');
+                    return;
+                }
+
+                // Fill the edit form with current values
+                document.getElementById('editReportId').value = reportId;
+                document.getElementById('editSiteName').value = report.siteName;
+                document.getElementById('editBoxCount').value = report.boxCount;
+                document.getElementById('editDescription').value = report.description;
+
+                // Display current photos
+                const currentPhotosPreview = document.getElementById('currentPhotosPreview');
+                currentPhotosPreview.innerHTML = '';
+                
+                if (report.images && report.images.length > 0) {
+                    report.images.forEach(imageUrl => {
+                        const photoDiv = document.createElement('div');
+                        photoDiv.className = 'photo-item';
+                        photoDiv.innerHTML = `
+                            <img src="${imageUrl}" alt="Report Photo" onclick="window.open('${imageUrl}', '_blank')">
+                            <button class="delete-btn" onclick="deleteReportPhoto('${reportId}', '${imageUrl}')">Delete</button>
+                        `;
+                        currentPhotosPreview.appendChild(photoDiv);
+                    });
+                } else {
+                    currentPhotosPreview.innerHTML = '<p class="no-photos">No photos available</p>';
+                }
+
+                // Clear new image preview
+                document.getElementById('editImagePreview').innerHTML = '';
+                document.getElementById('editReportImages').value = '';
+
+                // Show the edit report section
+                document.getElementById('editReportModal').style.display = 'block';
+                // Hide the main content
+                document.querySelector('.container').style.display = 'none';
+            } catch (error) {
+                console.error('Error loading report:', error);
+                alert('Failed to load report details: ' + error.message);
+            }
+        }
+
+        function hideEditReportModal() {
+            // Hide edit report section
+            document.getElementById('editReportModal').style.display = 'none';
+            // Show the main content
+            document.querySelector('.container').style.display = 'block';
+        }
+
+        function hideEditReportModal() {
+            document.getElementById('editReportModal').style.display = 'none';
+        }
+
+        // Preview images in edit form
+        document.getElementById('editReportImages').addEventListener('change', function(e) {
+            const preview = document.getElementById('editImagePreview');
+            preview.innerHTML = '';
+            
+            [...e.target.files].forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'preview-image';
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Delete photo from report
+        async function deleteReportPhoto(reportId, imageUrl) {
+            if (!confirm('Are you sure you want to delete this photo?')) return;
+            
+            const token = checkAuth();
+            try {
+                const response = await fetch(`/api/reports/${reportId}/photos`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ imageUrl })
+                });
+
+                if (response.ok) {
+                    // Refresh the edit form
+                    editReport(reportId);
+                } else {
+                    alert('Failed to delete photo');
+                }
+            } catch (error) {
+                alert('An error occurred while deleting the photo');
+            }
+        }
+
+        document.getElementById('reportForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const token = checkAuth();
+            
+            const images = [...document.getElementById('reportImages').files];
+            const imagePromises = images.map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            try {
+                const imageDataUrls = await Promise.all(imagePromises);
+                
+                let location = null;
+                if (navigator.geolocation) {
+                    location = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(
+                            pos => resolve({
+                                latitude: pos.coords.latitude,
+                                longitude: pos.coords.longitude
+                            }),
+                            reject
+                        );
+                    });
+                }
+
+                const formData = {
+                    siteName: document.getElementById('siteName').value,
+                    boxCount: parseInt(document.getElementById('boxCount').value),
+                    images: imageDataUrls,
+                    description: document.getElementById('description').value,
+                    location
+                };
+
+                const response = await fetch('/api/reports', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    this.reset();
+                    document.getElementById('imagePreview').innerHTML = '';
+                    loadReports();
+                } else {
+                    alert('Failed to submit report');
+                }
+            } catch (error) {
+                alert('An error occurred');
+            }
+        });
+
+        async function deleteReport(reportId) {
+            if (!confirm('Are you sure you want to delete this report?')) return;
+            
+            const token = checkAuth();
+            try {
+                // First, get the report to check its status and images
+                const checkResponse = await fetch(`/api/reports/${reportId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!checkResponse.ok) {
+                    const error = await checkResponse.json();
+                    alert(error.error || 'Failed to fetch report details');
+                    return;
+                }
+                
+                const report = await checkResponse.json();
+                
+                if (report.status !== 'Pending' && report.status !== 'Rejected') {
+                    alert('Only pending or rejected reports can be deleted');
+                    return;
+                }
+                
+                // Proceed with deletion
+                const response = await fetch(`/api/reports/${reportId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message || 'Report deleted successfully');
+                    loadReports(); // Refresh the reports list
+                } else {
+                    alert(result.error || 'Failed to delete report');
+                }
+            } catch (error) {
+                console.error('Error deleting report:', error);
+                alert('An error occurred while deleting the report. Please try again.');
+            }
+        }
+
+        // View report photos
+        async function viewReportPhotos(reportId) {
+            const token = checkAuth();
+            try {
+                const response = await fetch(`/api/reports/${reportId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const report = await response.json();
+                
+                const photosGrid = document.getElementById('photosGrid');
+                photosGrid.innerHTML = '';
+
+                if (report.images.length === 0) {
+                    photosGrid.innerHTML = '<p style="text-align: center; width: 100%; padding: 2rem;">No photos available for this report.</p>';
+                } else {
+                    report.images.forEach(imageUrl => {
+                        const photoDiv = document.createElement('div');
+                        photoDiv.className = 'photo-item';
+                        photoDiv.innerHTML = `
+                            <img src="${imageUrl}" alt="Report Photo" 
+                                onclick="window.open('${imageUrl}', '_blank')"
+                                loading="lazy"
+                                onload="this.style.opacity='1'"
+                                style="opacity: 0; transition: opacity 0.3s ease;">
+                        `;
+                        photosGrid.appendChild(photoDiv);
+                    });
+                }
+                
+                document.getElementById('viewPhotosModal').style.display = 'block';
+                // Scroll to top when opening modal
+                document.getElementById('viewPhotosModal').scrollTop = 0;
+            } catch (error) {
+                console.error('Error loading photos:', error);
+                alert('Failed to load photos');
+            }
+        }
+
+        function hideViewPhotosModal() {
+            document.getElementById('viewPhotosModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('viewPhotosModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideViewPhotosModal();
+            }
+        });
+
+        async function showAddPhotosModal(reportId) {
+            try {
+                const response = await fetch(`/api/reports/${reportId}`);
+                const report = await response.json();
+                
+                if (report.status !== 'Pending') {
+                    alert('Photos can only be added to pending reports.');
+                    return;
+                }
+
+                document.getElementById('reportIdForPhotos').value = reportId;
+                document.getElementById('addPhotosModal').style.display = 'block';
+                document.getElementById('additionalPhotosPreview').innerHTML = '';
+            } catch (error) {
+                console.error('Error checking report status:', error);
+                alert('Failed to check report status');
+            }
+        }
+
+        function hideAddPhotosModal() {
+            document.getElementById('addPhotosModal').style.display = 'none';
+        }
+
+        // Preview additional photos
+        document.getElementById('additionalPhotos').addEventListener('change', function(e) {
+            const preview = document.getElementById('additionalPhotosPreview');
+            preview.innerHTML = '';
+            
+            [...e.target.files].forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'preview-image';
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Add photos to existing report
+        document.getElementById('addPhotosForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const token = checkAuth();
+            const reportId = document.getElementById('reportIdForPhotos').value;
+            
+            const images = [...document.getElementById('additionalPhotos').files];
+            const imagePromises = images.map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            try {
+                const imageDataUrls = await Promise.all(imagePromises);
+                
+                const response = await fetch(`/api/reports/${reportId}/photos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ images: imageDataUrls })
+                });
+
+                if (response.ok) {
+                    hideAddPhotosModal();
+                    loadReports();
+                    alert('Photos added successfully');
+                } else {
+                    alert('Failed to add photos');
+                }
+            } catch (error) {
+                alert('An error occurred');
+            }
+        });
+
+        // Handle edit report form submission
+        document.getElementById('editReportForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const token = checkAuth();
+            const reportId = document.getElementById('editReportId').value;
+            
+            const newImages = [...document.getElementById('editReportImages').files];
+            const imagePromises = newImages.map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            try {
+                const newImageDataUrls = await Promise.all(imagePromises);
+                
+                const formData = {
+                    siteName: document.getElementById('editSiteName').value,
+                    boxCount: parseInt(document.getElementById('editBoxCount').value),
+                    description: document.getElementById('editDescription').value,
+                    newImages: newImageDataUrls
+                };
+
+                const response = await fetch(`/api/reports/${reportId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    hideEditReportModal();
+                    loadReports();
+                    alert('Report updated successfully');
+                } else {
+                    alert('Failed to update report');
+                }
+            } catch (error) {
+                alert('An error occurred while updating the report');
+            }
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                checkAuth();
+                await loadProfile(); // Load profile first since it updates the icon
+                await Promise.all([
+                    loadTeamMembers(),
+                    loadReports()
+                ]);
+            } catch (error) {
+                console.error('Error initializing page:', error);
+                alert('There was an error loading your profile. Please try refreshing the page.');
+            }
+        });
+    </script>
+</body>
+</html>
