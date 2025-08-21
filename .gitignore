@@ -1,11 +1,1 @@
-MONGO_URI=mongodb+srv://fromlaxin:GggS3elwRJWtOr61@cluster0.srn9tcn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
-CLOUDINARY_CLOUD_NAME=dy4hacjnm
-CLOUDINARY_API_KEY=166824799343629
-CLOUDINARY_API_SECRET=OV2mQkiTHjfSdKTobBnfTbaGL3s
-
-EMAIL_USER=fromlaxin@gmail.com
-EMAIL_PASS=mxjd zocy vchh zuio
-SESSION_SECRET=12345678
-
-PORT=3000
